@@ -1,0 +1,43 @@
+[versions]
+springBoot = "3.5.10"
+testcontainers = "1.21.4"
+lombok = "1.18.42"
+jjwt = "0.13.0"
+awaitility = "4.2.1"
+testcontainersRedisExt = "1.6.4"
+
+[libraries]
+# BOMs (platforms)
+springBootBom = { module = "org.springframework.boot:spring-boot-dependencies", version.ref = "springBoot" }
+testcontainersBom = { module = "org.testcontainers:testcontainers-bom", version.ref = "testcontainers" }
+
+# Spring (versions from Spring Boot BOM)
+springBootStarterWeb = { module = "org.springframework.boot:spring-boot-starter-web" }
+springBootStarterValidation = { module = "org.springframework.boot:spring-boot-starter-validation" }
+springBootStarterDataJpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa" }
+springBootStarterCache = { module = "org.springframework.boot:spring-boot-starter-cache" }
+springBootStarterActuator = { module = "org.springframework.boot:spring-boot-starter-actuator" }
+springBootStarterSecurity = { module = "org.springframework.boot:spring-boot-starter-security" }
+springBootStarterOauth2ResourceServer = { module = "org.springframework.boot:spring-boot-starter-oauth2-resource-server" }
+springKafka = { module = "org.springframework.kafka:spring-kafka" }
+springDataRedis = { module = "org.springframework.boot:spring-boot-starter-data-redis" }
+flyway = { module = "org.flywaydb:flyway-core" }
+flywayPostgress = { module = "org.flywaydb:flyway-database-postgresql" }
+postgres = { module = "org.postgresql:postgresql" }
+
+# Pinned explicitly
+lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
+jjwtApi = { module = "io.jsonwebtoken:jjwt-api", version.ref = "jjwt" }
+jjwtImpl = { module = "io.jsonwebtoken:jjwt-impl", version.ref = "jjwt" }
+jjwtJackson = { module = "io.jsonwebtoken:jjwt-jackson", version.ref = "jjwt" }
+
+# Testcontainers (versions from Testcontainers BOM)
+testcontainersJunit = { module = "org.testcontainers:junit-jupiter" }
+testcontainersPostgres = { module = "org.testcontainers:postgresql" }
+testcontainersKafka = { module = "org.testcontainers:kafka" }
+testcontainersRedis = { module = "com.redis.testcontainers:testcontainers-redis-junit", version.ref = "testcontainersRedisExt" }
+
+awaitility = { module = "org.awaitility:awaitility", version.ref = "awaitility" }
+
+[plugins]
+springBoot = { id = "org.springframework.boot", version.ref = "springBoot" }

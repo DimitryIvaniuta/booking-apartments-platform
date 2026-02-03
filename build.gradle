@@ -1,0 +1,51 @@
+plugins {
+  alias(libs.plugins.springBoot)
+  id 'java'
+}
+
+java {
+  toolchain { languageVersion = JavaLanguageVersion.of(21) }
+}
+
+repositories { mavenCentral() }
+
+dependencies {
+  // Spring Boot BOM: versions for Spring stack
+  implementation(platform(libs.springBootBom))
+
+  // Testcontainers BOM: pin latest Testcontainers independently of Boot BOM
+  testImplementation(enforcedPlatform(libs.testcontainersBom))
+
+  implementation(libs.springBootStarterWeb)
+  implementation(libs.springBootStarterValidation)
+  implementation(libs.springBootStarterDataJpa)
+  implementation(libs.springBootStarterCache)
+  implementation(libs.springBootStarterActuator)
+  implementation(libs.springBootStarterSecurity)
+  implementation(libs.springBootStarterOauth2ResourceServer)
+  implementation(libs.springKafka)
+  implementation(libs.springDataRedis)
+  implementation(libs.flyway)
+  runtimeOnly(libs.flywayPostgress)
+  runtimeOnly(libs.postgres)
+
+  // Lombok pinned
+  compileOnly(libs.lombok)
+  annotationProcessor(libs.lombok)
+  testCompileOnly(libs.lombok)
+  testAnnotationProcessor(libs.lombok)
+
+  // JJWT pinned (not managed by Boot BOM)
+  implementation(libs.jjwtApi)
+  runtimeOnly(libs.jjwtImpl)
+  runtimeOnly(libs.jjwtJackson)
+
+  testImplementation(libs.testcontainersJunit)
+  testImplementation(libs.testcontainersPostgres)
+  testImplementation(libs.testcontainersKafka)
+  testImplementation(libs.testcontainersRedis)
+  testImplementation(libs.awaitility)
+  testImplementation('org.springframework.boot:spring-boot-starter-test')
+}
+
+tasks.withType(Test).configureEach { useJUnitPlatform() }
