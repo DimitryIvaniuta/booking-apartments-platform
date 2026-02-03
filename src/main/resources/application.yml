@@ -1,0 +1,87 @@
+server:
+  port: 8080
+  shutdown: graceful
+
+spring:
+  application:
+    name: booking-apartments
+  cache:
+    type: redis
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5456/booking}
+    username: ${DB_USER:booking}
+    password: ${DB_PASSWORD:booking}
+    hikari:
+      maximum-pool-size: ${DB_POOL_MAX:20}
+      minimum-idle: ${DB_POOL_MIN_IDLE:5}
+      connection-timeout: ${DB_POOL_CONN_TIMEOUT_MS:2000}
+      validation-timeout: 1000
+      max-lifetime: 1800000
+      leak-detection-threshold: 0
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+  flyway:
+    enabled: true
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6385}
+      repositories:
+        enabled: false
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP:localhost:9099}
+    producer:
+      acks: all
+      retries: 2147483647
+      properties:
+        enable.idempotence: true
+        max.in.flight.requests.per.connection: 5
+        delivery.timeout.ms: 120000
+        request.timeout.ms: 30000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+booking:
+  holds:
+    default-minutes: 15
+  outbox:
+    poll:
+      fixed-delay-ms: 500
+      batch-size: 100
+  idempotency:
+    ttl-hours: 24
+
+logging:
+  pattern:
+    level: "%5p [corr=%X{corrId:-}]"
+
+app:
+  rate-limit:
+    enabled: true
+    # max requests per window per client (X-Client-Id or IP)
+    max-requests: 200
+    window-seconds: 60
+    path-prefixes: ["/api"]
+
+auth:
+  access-token-ttl-minutes: 15
+  refresh-token-ttl-days: 30
+  verification-token-ttl-hours: 24
+  lockout-max-failures: 5
+  lockout-window-seconds: 900
+  lockout-duration-seconds: 900
+  outbox-topic: ${AUTH_OUTBOX_TOPIC:auth-events}

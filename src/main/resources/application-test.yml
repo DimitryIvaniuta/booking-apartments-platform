@@ -1,0 +1,17 @@
+spring:
+  jpa:
+    properties:
+      hibernate:
+        show_sql: false
+        format_sql: false
+  flyway:
+    clean-disabled: false
+
+auth:
+  access-token-ttl-minutes: 5
+  refresh-token-ttl-days: 1
+  verification-token-ttl-hours: 24
+  lockout-max-failures: 5
+  lockout-window-seconds: 60
+  lockout-duration-seconds: 60
+  outbox-topic: auth-events
